@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TimmyX IA - Aprende Programación con Timoteo Sandoval</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #0f172a; color: #e2e8f0; line-height: 1.6;
+    }
+  .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+    header {
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      padding: 30px 20px; border-radius: 16px; margin-bottom: 30px;
+      box-shadow: 0 10px 30px rgba(99, 102, 241, 0.3);
+    }
+    h1 { font-size: 2.5rem; margin-bottom: 8px; }
+  .subtitle { opacity: 0.9; font-size: 1.1rem; }
+  .tutor { opacity: 0.8; font-size: 0.95rem; margin-top: 8px; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    @media (max-width: 900px) {.grid { grid-template-columns: 1fr; } }
+  .card {
+      background: #1e293b; border-radius: 12px; padding: 24px;
+      border: 1px solid #334155; box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+  .card h2 { color: #a78bfa; margin-bottom: 16px; font-size: 1.4rem; }
+    select, button, textarea {
+      width: 100%; padding: 12px; border-radius: 8px; border: 1px solid #475569;
+      background: #0f172a; color: #e2e8f0; font-size: 1rem; margin-bottom: 12px;
+    }
+    button {
+      background: #6366f1; border: none; font-weight: 600; cursor: pointer;
+      transition: 0.2s;
+    }
+    button:hover { background: #4f46e5; transform: translateY(-2px); }
+  .btn-secondary { background: #334155; }
+  .btn-secondary:hover { background: #475569; }
+    #output {
+      background: #020617; padding: 16px; border-radius: 8px; min-height: 200px;
+      font-family: 'Courier New', monospace; white-space: pre-wrap;
+      border: 1px solid #334155; overflow-y: auto; max-height: 400px;
+    }
+  .lesson-list { list-style: none; }
+  .lesson-list li {
+      padding: 12px; margin-bottom: 8px; background: #0f172a; border-radius: 8px;
+      cursor: pointer; border: 1px solid #334155; transition: 0.2s;
+    }
+  .lesson-list li:hover { border-color: #6366f1; background: #1e293b; }
+  .tag {
+      display: inline-block; background: #4338ca; padding: 4px 10px;
+      border-radius: 20px; font-size: 0.8rem; margin: 4px 4px 0 0;
+    }
+  .stats { display: flex; gap: 20px; margin-top: 20px; }
+  .stat-box { flex: 1; text-align: center; background: #0f172a; padding: 16px; border-radius: 8px; }
+  .stat-box strong { font-size: 1.8rem; color: #a78bfa; display: block; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>TimmyX IA 🚀</h1>
+      <p class="subtitle">Tu tutor de programación con Inteligencia Artificial</p>
+      <p class="tutor">Creado por: <strong>Timoteo Sandoval</strong></p>
+    </header>
+
+    <div class="grid">
+      <div class="card">
+        <h2>1. Elige qué quieres aprender</h2>
+        <select id="topic">
+          <option value="python">Python desde cero</option>
+          <option value="javascript">JavaScript para web</option>
+          <option value="ciberseguridad">Ciberseguridad básica</option>
+          <option value="ia">Fundamentos de IA</option>
+          <option value="sql">Bases de datos con SQL</option>
+        </select>
+
+        <select id="level">
+          <option value="principiante">Principiante</option>
+          <option value="intermedio">Intermedio</option>
+          <option value="avanzado">Avanzado</option>
+        </select>
+
+        <button onclick="generarLeccion()">Generar Lección con IA</button>
+        <button class="btn-secondary" onclick="generarReto()">Reto de Código</button>
+      </div>
+
+      <div class="card">
+        <h2>2. Playground de Código</h2>
+        <textarea id="codeInput" rows="6" placeholder="Escribe tu código aquí...">print("Hola, TimmyX IA")</textarea>
+        <button onclick="ejecutarCodigo()">Ejecutar Código</button>
+        <button class="btn-secondary" onclick="explicarCodigo()">Explicar con IA</button>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top: 20px;">
+      <h2>Salida de TimmyX IA</h2>
+      <div id="output">Bienvenido a TimmyX IA. Soy tu tutor Timoteo Sandoval.
+
+Selecciona un tema y genera tu primera lección. Te explicaré conceptos, te daré ejemplos y corregiré tu código.
+
+Tip: Esto es una demo frontend. Para conectar una IA real necesitarías una API como OpenAI o Gemini en el backend.</div>
+    </div>
+
+    <div class="card" style="margin-top: 20px;">
+      <h2>Ruta de Aprendizaje</h2>
+      <ul class="lesson-list" id="lessonPath">
+        <li onclick="cargarTema('variables')">Variables y Tipos de Datos <span class="tag">Python</span></li>
+        <li onclick="cargarTema('condicionales')">Condicionales if/else <span class="tag">Python</span></li>
+        <li onclick="cargarTema('bucles')">Bucles for y while <span class="tag">Python</span></li>
+        <li onclick="cargarTema('funciones')">Funciones y Parámetros <span class="tag">Python</span></li>
+      </ul>
+      <div class="stats">
+        <div class="stat-box"><strong id="progreso">0%</strong><span>Progreso</span></div>
+        <div class="stat-box"><strong id="racha">0</strong><span>Días de racha</span></div>
+        <div class="stat-box"><strong id="retos">0</strong><span>Retos completados</span></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let progresoActual = 0;
+    let rachaActual = 0;
+    let retosCompletados = 0;
+
+    const lecciones = {
+      python: {
+        principiante: `**Lección con Timoteo Sandoval: Python para Principiantes**
+1. ¿Qué es una variable? Es una caja donde guardas datos.
+   Ejemplo: edad = 25
+2. Tipos básicos: int, float, str, bool
+3. print() muestra cosas en pantalla.
+
+**Ejercicio**: Crea una variable nombre y otra edad. Imprime "Hola, soy [nombre] y tengo años"`,
+
+        intermedio: `**Lección con Timoteo Sandoval: Funciones en Python**
+def saludar(nombre):
+    return f"Hola {nombre}"
+
+Las funciones evitan repetir código. Usan 'def', nombre, parámetros y 'return'.`,
+
+        avanzado: `**Lección con Timoteo Sandoval: Programación Orientada a Objetos**
+class Usuario:
+    def __init__(self, nombre):
+        self.nombre = nombre
+    def saludar(self):
+        return f"Soy {self.nombre}"
+
+La POO modela el mundo real con objetos que tienen datos y acciones.`
+      },
+      javascript: {
+        principiante: `**Lección con Timoteo Sandoval: JavaScript Básico**
+1. Variables: let nombre = "Ana";
+2. DOM: document.getElementById()
+3. Eventos: button.onclick = () => alert("Click")`,
+        intermedio: `**Lección con Timoteo Sandoval: Async/Await**
+fetch('https://api.ejemplo.com')
+.then(res => res.json())
+.then(data => console.log(data))
+
+JS es asíncrono por naturaleza para no bloquear la web.`,
+        avanzado: `**Lección con Timoteo Sandoval: Closures y Scope**
+function contador() {
+  let count = 0;
+  return () => ++count;
+}
+Los closures recuerdan el entorno donde fueron creados.`
+      },
+      ciberseguridad: {
+        principiante: `**Lección con Timoteo Sandoval: Seguridad Básica**
+1. Nunca uses '123456' como contraseña
+2. Phishing: no des clic a links sospechosos
+3. HTTPS cifra tu conexión. Busca el candado.`,
+        intermedio: `**Lección con Timoteo Sandoval: Hashing vs Encriptación**
+Hash: MD5, SHA256 - Un solo sentido. Para passwords.
+Encriptación: AES - Doble sentido con llave. Para datos.`,
+        avanzado: `**Lección con Timoteo Sandoval: SQL Injection**
+' OR '1'='1 -- Esta entrada maliciosa puede vaciar tu DB.
+Solución: Usa prepared statements, nunca concatenes input de usuario.`
+      },
+      ia: {
+        principiante: `**Lección con Timoteo Sandoval: ¿Qué es IA?**
+IA = Máquinas que imitan inteligencia humana.
+ML = Aprende de datos sin ser programada explícitamente.
+Red neuronal = Imita el cerebro con capas de neuronas.`,
+        intermedio: `**Lección con Timoteo Sandoval: Regresión Lineal**
+y = mx + b. La máquina encuentra la mejor línea que pasa por tus datos para predecir valores futuros.`,
+        avanzado: `**Lección con Timoteo Sandoval: Transformers**
+El modelo detrás de ChatGPT. Usa "atención" para decidir qué palabras son importantes en una frase.`
+      },
+      sql: {
+        principiante: `**Lección con Timoteo Sandoval: SELECT Básico**
+SELECT nombre, edad FROM usuarios WHERE edad > 18;
+SQL consulta bases de datos. SELECT elige columnas, FROM la tabla, WHERE filtra.`,
+        intermedio: `**Lección con Timoteo Sandoval: JOIN**
+SELECT * FROM usuarios
+JOIN pedidos ON usuarios.id = pedidos.user_id;
+JOIN combina tablas relacionadas por una llave.`,
+        avanzado: `**Lección con Timoteo Sandoval: Índices**
+CREATE INDEX idx_email ON usuarios(email);
+Los índices aceleran búsquedas x1000 pero hacen lenta la escritura.`
+      }
+    };
+
+    function generarLeccion() {
+      const topic = document.getElementById('topic').value;
+      const level = document.getElementById('level').value;
+      const output = document.getElementById('output');
+      output.textContent = lecciones[topic][level] + "\n\n[Simulación de IA: En una app real, aquí conectarías con GPT-4/Gemini para respuestas dinámicas]";
+      actualizarProgreso(10);
+    }
+
+    function generarReto() {
+      const retos = [
+        "Reto de TimmyX IA: Escribe una función que reciba un número y devuelva si es par o impar.",
+        "Reto de TimmyX IA: Crea un bucle que imprima los números del 1 al 10.",
+        "Reto de TimmyX IA: Haz una lista con 5 lenguajes de programación y muéstrala.",
+        "Reto FizzBuzz: Imprime 1-100, pero 'Fizz' si es múltiplo de 3, 'Buzz' si es de 5."
+      ];
+      document.getElementById('output').textContent = retos[Math.floor(Math.random() * retos.length)];
+    }
+
+    function ejecutarCodigo() {
+      const code = document.getElementById('codeInput').value;
+      const output = document.getElementById('output');
+      if (code.includes('print(')) {
+        try {
+          const match = code.match(/print\(["'](.+)["']\)/);
+          if (match) {
+            output.textContent = `>>> ${match[1]}\n\nCódigo ejecutado correctamente ✅\n- TimmyX IA`;
+            actualizarProgreso(5);
+            retosCompletados++;
+            document.getElementById('retos').textContent = retosCompletados;
+          } else {
+            output.textContent = "Simulación: Solo puedo ejecutar print() simple en esta demo.\nPara ejecutar Python real necesitas un backend.";
+          }
+        } catch {
+          output.textContent = "Error de sintaxis. Revisa tu código. - TimmyX IA";
+        }
+      } else {
+        output.textContent = "Simulación: En una app real conectaría con un intérprete de Python/JS en servidor.\n\nTu código:\n" + code;
+      }
+    }
+
+    function explicarCodigo() {
+      const code = document.getElementById('codeInput').value;
+      document.getElementById('output').textContent = `[Explicación de Timoteo Sandoval]\n\nAnalicé tu código:\n${code}\n\nEste código hace X. Te sugiero Y para mejorarlo.\n\n[En versión real, la IA leería y explicaría línea por línea]`;
+    }
+
+    function cargarTema(tema) {
+      const temas = {
+        variables: "Timoteo explica: Las variables guardan datos. En Python: x = 5",
+        condicionales: "Timoteo explica: if x > 5: ejecuta esto. else: ejecuta esto otro",
+        bucles: "Timoteo explica: for i in range(10): repite 10 veces",
+        funciones: "Timoteo explica: def suma(a,b): return a+b // Reutiliza código"
+      };
+      document.getElementById('output').textContent = temas[tema];
+      actualizarProgreso(5);
+    }
+
+    function actualizarProgreso(cantidad) {
+      progresoActual = Math.min(100, progresoActual + cantidad);
+      document.getElementById('progreso').textContent = progresoActual + '%';
+      if (rachaActual === 0) rachaActual = 1;
+      document.getElementById('racha').textContent = rachaActual;
+    }
+  </script>
+</body>
+</html>
